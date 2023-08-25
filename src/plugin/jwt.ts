@@ -18,7 +18,6 @@ function verify(token: string): string | boolean | JWT.Jwt | JWT.JwtPayload {
   }
 }
 
-console.log(jwt.passurl)
 // middle 中间件
 const midwareExpressJwt = expressjwt({
   secret: jwt.salt!,
