@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { AppRouter } from '../plugin/express'
+import { AppRouter } from 'mduash/lib/decorators'
 import './modules/test'
 import jwt from '../plugin/jwt'
 

@@ -1,14 +1,14 @@
-import { Router } from 'express'
-import { AppRouter } from '../../plugin/express'
+import { Request, Response } from 'express'
+import { Get, Controller, Post } from 'mduash/lib/decorators'
 
-const routes = Router()
-
-routes.get('/v1/nihao', (req, res) => {
-  res.send(req.query)
-})
-
-routes.post('/v1/nihao', (req, res) => {
-  res.send(req.body)
-})
-
-AppRouter.getInstance().use('/test', routes)
+@Controller('/test')
+export default class Test {
+  @Get('/v1/nihao')
+  getTest(req: Request, res: Response) {
+    res.send(req.query)
+  }
+  @Post('/v1/buhao')
+  postTest(req: Request, res: Response) {
+    res.send(req.body)
+  }
+}
