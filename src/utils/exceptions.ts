@@ -6,7 +6,7 @@ import Log from '../plugin/log'
 // 错误码
 export const ErrorCode = {
   TEST_ERROR: generatorMError(10001, '测试异常'),
-  AUTH_TOKEN_ERROR: generatorMError(20001, 'Token 权限失效'),
+  AUTH_TOKEN_ERROR: generatorMError(20001, '无权限：Token 失效'),
   EXCUTE_ERROR: generatorMError(99999, '执行异常')
 }
 
