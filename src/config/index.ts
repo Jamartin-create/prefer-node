@@ -14,7 +14,9 @@ export default {
   jwt: {
     salt: process.env.JWT_SALT,
     expiresIn: process.env.JWT_EXPIRESIN,
-    passurl: process.env.JWT_PASS_URL!.split(',').map(url => new RegExp(url))
+    passurl: process.env.JWT_PASS_URL
+      ? process.env.JWT_PASS_URL.split(',').map(url => new RegExp(url))
+      : []
   },
   mysql: {
     database: process.env.MYSQL_DB_NAME,

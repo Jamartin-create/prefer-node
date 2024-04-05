@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
-import { MError, ErrorRes, generatorMError } from 'mduash'
+import { MError, generatorMError } from 'mduash'
+import { ErrorRes } from '../plugin/response'
 import Log from '../plugin/log'
 
 // 错误码
 export const ErrorCode = {
   TEST_ERROR: generatorMError(10001, '测试异常'),
+  AUTH_TOKEN_ERROR: generatorMError(20001, 'Token 权限失效'),
   EXCUTE_ERROR: generatorMError(99999, '执行异常')
 }
 
@@ -19,6 +21,11 @@ export function catchException(
 ) {
   if (err) {
     Log.error(err.msg || err.message)
+    // 权限问题单独处理
+    if (err.name === 'UnauthorizedError') {
+      res.send(ErrorRes(ErrorCode.AUTH_TOKEN_ERROR))
+      return
+    }
     let e = err instanceof MError ? err : ErrorCode.EXCUTE_ERROR
     res.send(ErrorRes(e))
   }

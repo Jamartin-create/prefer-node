@@ -5,6 +5,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "dev": "nodemon",
+    "build": "rimraf lib && tsc --outDir lib --module CommonJS --experimentalDecorators",
+    "start": "npm run build && cross-env NODE_ENV=dev node .",
     "changelog": "conventional-changelog -p -i CHANGELOG.md -s",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +19,7 @@
     "@types/sequelize": "^4.28.15",
     "chalk": "4.1.2",
     "cross-env": "^7.0.3",
-    "mduash": "1.1.9",
+    "mduash": "^2.0.3",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.2",
     "reflect-metadata": "^0.1.13",

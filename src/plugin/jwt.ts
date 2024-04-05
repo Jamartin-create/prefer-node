@@ -1,32 +1,17 @@
-import JWT from 'jsonwebtoken'
-import { expressjwt } from 'express-jwt'
+// import JWT from 'jsonwebtoken'
+import { JWT } from 'mduash'
 import config from '../config'
 
 const { jwt } = config
 
+const Jwt = new JWT(jwt.salt || 'mduash', '24h')
+
 // 生成 token
-function sign(data: any, options: JWT.SignOptions): string {
-  return JWT.sign(data, jwt.salt!, { expiresIn: jwt.expiresIn, ...options })
-}
+export const sign = Jwt.sign
 
 // 校验 token
-function verify(token: string): string | boolean | JWT.Jwt | JWT.JwtPayload {
-  try {
-    return JWT.verify(token, jwt.salt!)
-  } catch (e) {
-    return false
-  }
-}
+export const verify = Jwt.verify
 
-// middle 中间件
-const midwareExpressJwt = expressjwt({
-  secret: jwt.salt!,
-  requestProperty: 'auth',
-  algorithms: ['HS256']
-}).unless({ path: jwt.passurl })
-
-export default {
-  sign,
-  verify,
-  midwareExpressJwt
-}
+// 生成 Express 路由中间件
+// @ts-ignore
+export const jwtExpressMidware = Jwt.getExpressMidware(jwt.passurl)
