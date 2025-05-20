@@ -14,6 +14,8 @@ export async function connect() {
     await sequelize.authenticate()
     Log.success('MySQL connect Success !')
   } catch (e) {
+    // Log.error(e)
+    console.log(e)
     Log.error('Unable to connect MySQL !')
   }
 }

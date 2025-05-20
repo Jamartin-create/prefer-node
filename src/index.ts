@@ -1,9 +1,9 @@
 import { getServer } from './plugin/express'
 import { catchException } from './utils/exceptions'
-// import { connect } from './plugin/sequelize'
+import { connect } from './plugin/sequelize'
 import routes from './routes'
 
-// connect() // 连接数据库
+connect() // 连接数据库
 
 const server = getServer()
 
