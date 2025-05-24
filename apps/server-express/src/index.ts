@@ -2,14 +2,15 @@ import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import { globLogger } from 'logger';
 import session from 'express-session';
-import passport from '@/plugin/passport'; // Import passport
-
-import { catchException } from '@/utils/exceptions';
-import routes from '@/routes';
 import cookieParser from 'cookie-parser';
 import { expressjwt } from 'express-jwt';
-import { globLogger } from 'logger';
+
+import routes from '@/routes';
+import passport from '@/plugin/passport';
+import { connectRedis } from '@/plugin/redisCache';
+import { catchException } from '@/utils/exceptions';
 
 dotenv.config({ path: `.env` });
 
@@ -42,6 +43,8 @@ app.use(passport.session());
 app.use(routes); // 挂载路由
 
 app.use(catchException); // 全局异常捕获
+
+connectRedis();
 
 const server = http.createServer(app);
 server.listen(process.env.SERVER_PORT, () => {
