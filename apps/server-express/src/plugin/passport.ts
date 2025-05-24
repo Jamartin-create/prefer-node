@@ -3,6 +3,7 @@ import localStrategy from 'passport-local';
 
 import { PrismaClient } from 'db/prisma/client';
 import { pbkdf2 } from '@/utils/common';
+import { authLogger } from './logger';
 
 const message = {
     username: '用户名或密码错误'
@@ -33,7 +34,7 @@ const local = new localStrategy.Strategy(async function verify(
 
         return cb(null, user);
     } catch (e) {
-        console.log(e);
+        authLogger.error(e);
         return cb(null, false, { message: message.username });
     }
 });

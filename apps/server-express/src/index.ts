@@ -7,9 +7,9 @@ import passport from '@/plugin/passport'; // Import passport
 
 import { catchException } from '@/utils/exceptions';
 import routes from '@/routes';
-import Log from '@/plugin/log';
 import cookieParser from 'cookie-parser';
 import { expressjwt } from 'express-jwt';
+import { globLogger } from 'logger';
 
 dotenv.config({ path: `.env` });
 
@@ -45,6 +45,5 @@ app.use(catchException); // 全局异常捕获
 
 const server = http.createServer(app);
 server.listen(process.env.SERVER_PORT, () => {
-    Log.success('Server start success!');
-    Log.success(`Server listen on port ${process.env.SERVER_PORT}`);
+    globLogger.info(`Server listen on port ${process.env.SERVER_PORT}`);
 });

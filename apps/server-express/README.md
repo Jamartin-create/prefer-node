@@ -21,14 +21,15 @@ TODO:
     - [ ] GithubActions
 - [ ] Authentication
     - [ ] Oauth2.0: [passport](https://github.com/jaredhanson/passport)
-    - [ ] JWT
-    - [ ] Session
+    - [x] JWT
+    - [x] Session
+    - [ ] email
 - [ ] Store
     - [ ] Redis
     - [ ] MongoDB
     - [ ] PostgreSQL
     - [ ] ElasticSearch
-    - [ ] MySQL
+    - [x] MySQL（Prisma）
 - [ ] Resource
     - [ ] CDN
     - [ ] OSS

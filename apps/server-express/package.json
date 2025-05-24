@@ -19,7 +19,6 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
-    "chalk": "4.1.2",
     "cross-env": "^7.0.3",
     "nodemon": "^3.0.1",
     "prettier": "^3.5.3",
@@ -40,7 +39,9 @@
     "mysql2": "^3.6.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "prisma": "^6.8.2"
+    "prisma": "^6.8.2",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "prisma": {
     "schema": "./db/prisma/schema.prisma"

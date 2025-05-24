@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import Log from '../plugin/log';
+import { globLogger } from '@/plugin/logger';
 
 class CustomError extends Error {
     code: number;
@@ -37,7 +37,7 @@ export function catchException(
     next: NextFunction
 ) {
     if (err) {
-        Log.error(err.msg || err.message);
+        globLogger.error(err.msg || err.message);
         // 权限问题单独处理
         if (err.name === 'UnauthorizedError') {
             res.send({ code: 401, msg: '暂无权限' });
