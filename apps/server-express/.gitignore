@@ -1,0 +1,10 @@
+node_modules
+lib
+dist
+package-lock.json
+yarn.lock
+
+.env
+.env.*
+
+db/prisma/client
