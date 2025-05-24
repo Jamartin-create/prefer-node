@@ -16,7 +16,7 @@ TODO:
 - [ ] Dev/Ops
     - [x] Docker
     - [ ] CI/CD
-    - [ ] Log
+    - [x] Log
     - [ ] Nginx
     - [ ] GithubActions
 - [ ] Authentication
