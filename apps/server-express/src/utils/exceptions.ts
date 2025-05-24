@@ -40,7 +40,7 @@ export function catchException(
         Log.error(err.msg || err.message);
         // 权限问题单独处理
         if (err.name === 'UnauthorizedError') {
-            res.send();
+            res.send({ code: 401, msg: '暂无权限' });
             return;
         }
         let e = err instanceof CustomError ? err : ErrorCode.EXCUTE_ERROR;

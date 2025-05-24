@@ -20,9 +20,10 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "db": ["db/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "db"],
   "exclude": ["lib"]
 }

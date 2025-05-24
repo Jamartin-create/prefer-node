@@ -11,7 +11,7 @@ datasource db {
 model Users {
     id                  Int      @id @default(autoincrement())
     username            String   @unique
-    email               String   @unique
+    email               String?  @unique
     is_active           Boolean  @default(true)
     profile_picture_url String?
     bio                 String?
@@ -21,14 +21,14 @@ model Users {
 }
 
 model UsersIdentities {
-    id               Int       @id @default(autoincrement())
-    user_id          Int
-    provider         String
-    provider_user_id String
-    access_token     String?
-    refresh_token    String?
-    expires_at       DateTime?
-    password_hash    String?
-    created_at       DateTime  @default(now())
-    update_at        DateTime  @updatedAt
+    id            Int       @id @default(autoincrement())
+    user_id       Int
+    provider      String
+    access_token  String?
+    refresh_token String?
+    expires_at    DateTime?
+    salt          String?
+    password_hash String?
+    created_at    DateTime  @default(now())
+    update_at     DateTime  @updatedAt
 }
