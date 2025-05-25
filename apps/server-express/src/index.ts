@@ -24,7 +24,11 @@ app.use(
         requestProperty: 'auth',
         algorithms: ['HS256']
     }).unless({
-        path: [new RegExp('^\/v1\/auth\/.*')]
+        path: [
+            new RegExp('^\/v1\/auth\/.*'),
+            new RegExp('^\/sapi\/.*'),
+            '/.well-known/appspecific/com.chrome.devtools.json'
+        ]
     })
 );
 app.use(

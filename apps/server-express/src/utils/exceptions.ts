@@ -32,12 +32,14 @@ function ErrorRes(e: CustomError) {
  */
 export function catchException(
     err: CustomError,
-    _: Request,
+    req: Request,
     res: Response,
     next: NextFunction
 ) {
     if (err) {
-        globLogger.error(err.msg || err.message);
+        globLogger.error(
+            `${err.msg || err.message}, request path: ${req.path}`
+        );
         // 权限问题单独处理
         if (err.name === 'UnauthorizedError') {
             res.send({ code: 401, msg: '暂无权限' });

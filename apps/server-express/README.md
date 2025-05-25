@@ -45,7 +45,7 @@ TODO:
     - [ ] Sentry
     - [ ] prometheus
 - [ ] Doc
-    - [ ] Swagger
+    - [x] Swagger
     - [ ] Postman
 - [ ] Test
     - [ ] Jest
