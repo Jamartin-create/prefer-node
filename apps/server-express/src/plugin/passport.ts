@@ -3,11 +3,10 @@ import { getCache, setCache } from './redisCache'; // 导入中间文件的方�
 import { globLogger } from './logger';
 
 passport.serializeUser(function (user: any, cb) {
-    cb(null, { id: user.id, username: user.username });
+    cb(null, { id: user.id, username: user.username, email: user.email });
 });
 
 passport.deserializeUser(async function (user: any, cb) {
-    console.log(user, '---');
     const cacheKey = `session:user-cache:${user.id}`;
     const cachedUser = await getCache(cacheKey);
 
