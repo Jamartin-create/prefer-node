@@ -12,10 +12,6 @@ routes.post('/login/:type', async function (req, res, next) {
             signin(req, res, next);
         } else if (type === 'email') {
             const { email, code } = req.body;
-            if (!email || !code) {
-                res.send({ code: 400, msg: '缺少邮箱或验证码' });
-                return;
-            }
             const result = await sigininByEmail(email, code);
             res.send({ code: 0, msg: 'ok', data: result });
         } else {

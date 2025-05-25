@@ -8,8 +8,8 @@ TODO:
     - [x] pritter
     - [ ] eslint
 - [ ] Safety
-    - [ ] [express-rate-limit](https://github.com/express-rate-limit/express-rate-limit)
-    - [ ] [helmet](https://github.com/helmetjs/helmet)
+    - [x] [express-rate-limit](https://github.com/express-rate-limit/express-rate-limit)
+    - [x] [helmet](https://github.com/helmetjs/helmet)
 - [ ] Structure
     - [ ] MVC
     - [ ] AOP
@@ -23,9 +23,9 @@ TODO:
     - [ ] Oauth2.0: [passport](https://github.com/jaredhanson/passport)
     - [x] JWT
     - [x] Session
-    - [ ] email
+    - [x] email
 - [ ] Store
-    - [ ] Redis
+    - [x] Redis
     - [ ] MongoDB
     - [ ] PostgreSQL
     - [ ] ElasticSearch

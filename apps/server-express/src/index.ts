@@ -6,11 +6,13 @@ import { globLogger } from 'logger';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import { expressjwt } from 'express-jwt';
+import rateLimit from 'express-rate-limit';
 
 import routes from '@/routes';
 import passport from '@/plugin/passport';
 import { connectRedis } from '@/plugin/redisCache';
 import { catchException } from '@/utils/exceptions';
+import helmet from 'helmet';
 
 dotenv.config({ path: `.env` });
 
@@ -25,6 +27,25 @@ app.use(
         path: [new RegExp('^\/v1\/auth\/.*')]
     })
 );
+app.use(
+    rateLimit({
+        windowMs: 60 * 1000, // 1 minutes
+        max: 100,
+        standardHeaders: 'draft-8',
+        legacyHeaders: false,
+        handler: (req, res) => {
+            globLogger.warn(
+                `Too many requests from ${req.ip}, path: ${req.path}`
+            );
+            res.status(429);
+            res.send({
+                code: 429,
+                msg: 'Too many requests, please try again later.'
+            });
+        }
+    })
+);
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
