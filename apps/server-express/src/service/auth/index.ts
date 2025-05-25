@@ -26,8 +26,12 @@ export async function signin(req: Request, res: Response, next: NextFunction) {
             res.send(getResponse(401, info.message));
             return;
         }
-        const auth = { token: jwtSign({ id: user.id }) };
-        res.send(getResponse(0, 'ok', { user, auth }));
+
+        req.login(user, function (err) {
+            if (err) return next(err);
+            const auth = { token: jwtSign({ id: user.id }) };
+            res.send(getResponse(0, 'ok', { user, auth }));
+        });
     })(req, res, next);
 }
 
