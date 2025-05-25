@@ -20,8 +20,12 @@ passport.deserializeUser(async function (user: any, cb) {
         const fullUser = user; // 模拟从数据库加载
 
         // 将从数据库加载（或模拟加载）的用户数据存入缓存，设置过期时间（例如 1 小时）
-        await setCache(cacheKey, fullUser, 60 * 60);
+
         globLogger.info(`Cache miss for user ${user.id}, data cached.`);
+        await setCache(cacheKey, fullUser, 60 * 60);
+        globLogger.info(
+            `Cache miss for user ${user.id}, data loaded from DB and cached.`
+        );
 
         cb(null, fullUser);
     }

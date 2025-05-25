@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import auth from './auth';
+import tasks from './task';
 import swagger from '@/plugin/swagger';
 
 const routes = Router();
 
 routes.use('/v1/auth', auth);
+routes.use('/v1/tasks', tasks);
 routes.get('/v1/hello', (_, res) => res.send('hello world'));
 
 routes.use(

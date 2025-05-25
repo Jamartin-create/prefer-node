@@ -13,10 +13,12 @@ import passport from '@/plugin/passport';
 import { connectRedis } from '@/plugin/redisCache';
 import { catchException } from '@/utils/exceptions';
 import helmet from 'helmet';
+import { mountSocket } from './plugin/socket.io';
 
 dotenv.config({ path: `.env` });
 
 const app = express();
+const server = http.createServer(app);
 
 app.use(
     expressjwt({
@@ -70,8 +72,8 @@ app.use(routes); // 挂载路由
 app.use(catchException); // 全局异常捕获
 
 connectRedis();
+mountSocket(server);
 
-const server = http.createServer(app);
 server.listen(process.env.SERVER_PORT, () => {
     globLogger.info(`Server listen on port ${process.env.SERVER_PORT}`);
 });
