@@ -8,6 +8,25 @@ interface User {
     createdAt: string;
 }
 
+interface LinkedAccount {
+    id: string;
+    providerId: 'github' | 'google' | string;
+    createdAt: string;
+    updatedAt: string;
+    accountId: string;
+    scopes: string[]
+}
+
+interface LoginHistory {
+    id: string;
+    userId: string;
+    userAgent?: string;
+    ipAddress?: string;
+    city?: string;
+    country?: string;
+    createdAt: string;
+}
+
 interface AuthContextType {
     user: User | null;
     loading: boolean;
@@ -21,6 +40,12 @@ interface AuthContextType {
         rememberMe?: boolean;
     }) => Promise<void>;
     loginWithSocial: (provider: 'github' | 'google') => Promise<void>;
+    linkAccount: (provider: 'github' | 'google') => Promise<void>;
+    unlinkAccount: (provider: 'github' | 'google') => Promise<void>;
+    getLinkedAccounts: () => Promise<LinkedAccount[]>;
+    changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+    updateUser: (data: { name?: string; email?: string; image?: string }) => Promise<void>;
+    getLoginHistory: () => Promise<LoginHistory[]>;
     logout: () => Promise<void>;
     checkSession: () => Promise<void>;
 }
@@ -49,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
             if (response.ok) {
                 const data = await response.json();
-                if (data.user) {
+                if (data && data.user) {
                     setUser(data.user);
                 } else {
                     setUser(null);
@@ -144,6 +169,128 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
     };
 
+    const getLinkedAccounts = async (): Promise<LinkedAccount[]> => {
+        try {
+            const res = await fetch('/api/auth/list-accounts', { credentials: 'include' });
+            if (!res.ok) {
+                throw new Error('获取绑定账号失败');
+            }
+            const data = await res.json();
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('Get linked accounts failed:', error);
+            throw error instanceof Error ? error : new Error('获取绑定账号失败');
+        }
+    };
+
+    const linkAccount = async (provider: 'github' | 'google') => {
+        try {
+            const response = await fetch('/api/auth/link-social', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    provider,
+                    callbackURL: `${window.location.origin}/account-linking`
+                })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data.redirect) {
+                    window.location.href = data.url;
+                }
+                return;
+            }
+            let msg = '绑定账号失败';
+            try {
+                const err = await response.json();
+                msg = err.message || msg;
+            } catch {}
+            throw new Error(msg);
+        } catch (error) {
+            console.error('Link account init failed:', error);
+            throw new Error('账号绑定初始化失败');
+        }
+    };
+
+    const unlinkAccount = async (providerId: 'github' | 'google') => {
+        const res = await fetch('/api/auth/unlink-account', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ providerId }),
+            credentials: 'include'
+        });
+        if (!res.ok) {
+            let msg = '解绑账号失败';
+            try {
+                const err = await res.json();
+                msg = err.message || msg;
+            } catch {}
+            throw new Error(msg);
+        }
+    };
+
+    const changePassword = async (currentPassword: string, newPassword: string) => {
+        const response = await fetch('/api/auth/change-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                currentPassword,
+                newPassword,
+                revokeOtherSessions: true
+            }),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || '修改密码失败');
+        }
+    };
+
+    const updateUser = async (data: { name?: string; email?: string; image?: string }) => {
+        const response = await fetch('/api/auth/update-user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || '更新用户信息失败');
+        }
+
+        const result = await response.json();
+        if (result.user) {
+            setUser(result.user);
+        }
+        await checkSession();
+    };
+
+    const getLoginHistory = async (): Promise<LoginHistory[]> => {
+        try {
+            const response = await fetch('/api/auth/get-login-history', {
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error('获取登录历史失败');
+            }
+
+            const data = await response.json();
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('Get login history failed:', error);
+            throw error instanceof Error ? error : new Error('获取登录历史失败');
+        }
+    };
+
     const logout = async () => {
         await fetch('/api/auth/sign-out', {
             method: 'POST',
@@ -162,6 +309,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         login,
         register,
         loginWithSocial,
+        linkAccount,
+        unlinkAccount,
+        getLinkedAccounts,
+        changePassword,
+        updateUser,
+        getLoginHistory,
         logout,
         checkSession
     };

@@ -4,6 +4,11 @@ import { openAPI, username } from 'better-auth/plugins'
 import prsima from '../prisma';
 
 export const auth = betterAuth({
+    account: {
+        accountLinking: {
+            allowDifferentEmails: true
+        }
+    },
     socialProviders: {
         github: {
             clientId: process.env.GITHUB_CLIENT_ID!,

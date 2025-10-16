@@ -4,6 +4,10 @@ import { Toaster } from '@/components/ui/toaster'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import UserHomePage from '@/pages/UserHomePage'
+import AccountLinkingPage from '@/pages/AccountLinkingPage'
+import ChangePasswordPage from '@/pages/ChangePasswordPage'
+import UpdateProfilePage from '@/pages/UpdateProfilePage'
+import LoginHistoryPage from '@/pages/LoginHistoryPage'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { AuthProvider } from '@/contexts/AuthContext'
 
@@ -24,6 +28,38 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <UserHomePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/change-password"
+                element={
+                  <ProtectedRoute>
+                    <ChangePasswordPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/update-profile"
+                element={
+                  <ProtectedRoute>
+                    <UpdateProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/login-history"
+                element={
+                  <ProtectedRoute>
+                    <LoginHistoryPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/account-linking"
+                element={
+                  <ProtectedRoute>
+                    <AccountLinkingPage />
                   </ProtectedRoute>
                 }
               />

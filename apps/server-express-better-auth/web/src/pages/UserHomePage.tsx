@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useNavigate } from 'react-router-dom'
 import { User, LogOut } from 'lucide-react'
 
 const UserHomePage: React.FC = () => {
@@ -94,15 +94,46 @@ const UserHomePage: React.FC = () => {
                   <CardDescription>管理您的账户</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    <Button variant="outline" className="w-full justify-start">
-                      修改密码
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Button 
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => navigate('/change-password')}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span>🔒</span>
+                        <span>修改密码</span>
+                      </div>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      更新个人信息
+                    <Button 
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => navigate('/update-profile')}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span>👤</span>
+                        <span>更新个人信息</span>
+                      </div>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      查看登录历史
+                    <Button 
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => navigate('/login-history')}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span>📋</span>
+                        <span>查看登录历史</span>
+                      </div>
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => navigate('/account-linking')}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span>🔗</span>
+                        <span>账号绑定管理</span>
+                      </div>
                     </Button>
                   </div>
                 </CardContent>
