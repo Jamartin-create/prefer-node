@@ -11,7 +11,7 @@ const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { login, loginWithGitHub } = useAuth()
+  const { login, loginWithSocial } = useAuth()
   const navigate = useNavigate()
   const { toast } = useToast()
 
@@ -39,10 +39,22 @@ const LoginPage: React.FC = () => {
 
   const handleGitHubLogin = async () => {
     try {
-      await loginWithGitHub()
+      await loginWithSocial('github')
     } catch (error) {
       toast({
         title: 'GitHub 登录失败',
+        description: error instanceof Error ? error.message : '请稍后重试',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleGoogleLogin = async () => {
+    try {
+      await loginWithSocial('google')
+    } catch (error) {
+      toast({
+        title: 'Google 登录失败',
         description: error instanceof Error ? error.message : '请稍后重试',
         variant: 'destructive',
       })
@@ -88,9 +100,12 @@ const LoginPage: React.FC = () => {
               {isLoading ? '登录中...' : '登录'}
             </Button>
           </form>
-          <div className="mt-4">
+          <div className="mt-4 grid grid-cols-1 gap-2">
             <Button type="button" variant="outline" className="w-full" onClick={handleGitHubLogin}>
               使用 GitHub 登录
+            </Button>
+            <Button type="button" variant="outline" className="w-full" onClick={handleGoogleLogin}>
+              使用 Google 登录
             </Button>
           </div>
         </CardContent>

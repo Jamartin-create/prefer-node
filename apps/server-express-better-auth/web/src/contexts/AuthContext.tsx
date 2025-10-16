@@ -20,7 +20,7 @@ interface AuthContextType {
         callbackURL?: string;
         rememberMe?: boolean;
     }) => Promise<void>;
-    loginWithGitHub: () => Promise<void>;
+    loginWithSocial: (provider: 'github' | 'google') => Promise<void>;
     logout: () => Promise<void>;
     checkSession: () => Promise<void>;
 }
@@ -117,7 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(data.user);
     };
 
-    const loginWithGitHub = async () => {
+    const loginWithSocial = async (provider: 'github' | 'google') => {
         try {
             const callbackURL = `${window.location.origin}/home`;
             const response = await fetch('/api/auth/sign-in/social', {
@@ -126,21 +126,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    provider: 'github',
+                    provider,
                     callbackURL,
                 })
             });
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.message || 'GitHub login failed');
+                throw new Error(error.message || `${provider} login failed`);
             }
-			const data = await response.json();
-			if (data.redirect) {
-				window.location.href = data.url;
-			}
+            const data = await response.json();
+            if (data.redirect) {
+                window.location.href = data.url;
+            }
         } catch (error) {
-            console.error('GitHub login init failed:', error);
-            throw new Error('GitHub 登录初始化失败');
+            console.error('Social login init failed:', error);
+            throw new Error('社交登录初始化失败');
         }
     };
 
@@ -161,7 +161,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         loading,
         login,
         register,
-        loginWithGitHub,
+        loginWithSocial,
         logout,
         checkSession
     };

@@ -6,9 +6,13 @@ import prsima from '../prisma';
 export const auth = betterAuth({
     socialProviders: {
         github: {
-            clientId: 'Ov23liIdnwm9j0sdCF1k',
-            clientSecret: "776db6ae9b27c6a678b3ddc71428088ed5fac502",
+            clientId: process.env.GITHUB_CLIENT_ID!,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET!,
             enabled: true
+        },
+        google: {
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
         }
     },
     plugins: [

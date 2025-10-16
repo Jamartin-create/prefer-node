@@ -6,7 +6,8 @@
   "packageManager": "pnpm@9.11.0",
   "scripts": {
     "dev": "turbo run dev",
-    "dev:server-express": "turbo run dev --filter=server-express"
+    "dev:server-express": "turbo run dev --filter=server-express",
+    "dev:server-express-better-auth": "turbo run dev --filter=server-express-better-auth"
   },
   "keywords": [],
   "author": "",
