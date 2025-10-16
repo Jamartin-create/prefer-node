@@ -3,7 +3,6 @@ import 'dotenv/config';
 import http from 'http';
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
 import { toNodeHandler } from 'better-auth/node';
 import { auth } from './plugin/better-auth';
 
@@ -12,7 +11,6 @@ async function bootstrap() {
 
   const app = express();
   const server = http.createServer(app);
-
 
   try {
     await auth.api.getSession({
@@ -38,7 +36,6 @@ async function bootstrap() {
   
   
   // Security middleware
-  app.use(helmet());
   app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
