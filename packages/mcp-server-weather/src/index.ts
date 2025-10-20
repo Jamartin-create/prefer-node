@@ -1,10 +1,11 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp'
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 import { AlertsResponse, ForecastPeriod, ForecastResponse, PointsResponse } from './types';
 import { formatAlert, makeNWSRequest, NWS_API_BASE } from './utils';
 
-import z from 'zod'
+import { z as mcpZod } from "mcp-zod"
+const z = mcpZod as unknown as typeof import("zod")
 
 const server = new McpServer({
   name: 'weather',
@@ -13,12 +14,12 @@ const server = new McpServer({
 
 // Register weather tools
 server.tool(
-  "get-alerts",
-  "Get weather alerts for a state",
+  "get_alerts",
+  "Get active weather alerts for a specific state",
   {
-    state: z.string().length(2).describe("Two-letter state code (e.g. CA, NY)"),
+    state: z.string().length(2).describe("Two-letter state code (e.g. CA, NY)")
   },
-  async ({ state }) => {
+  async ({ state }, _) => {
     const stateCode = state.toUpperCase();
     const alertsData = await makeNWSRequest<AlertsResponse>(`${NWS_API_BASE}/alerts?area=${stateCode}`);
 
@@ -61,17 +62,13 @@ server.tool(
 
 
 server.tool(
-  "get-forecast",
+  "get_forecast",
   "Get weather forecast for a location",
   {
     latitude: z.number().min(-90).max(90).describe("Latitude of the location"),
-    longitude: z
-      .number()
-      .min(-180)
-      .max(180)
-      .describe("Longitude of the location"),
+    longitude: z.number().min(-180).max(180).describe("Longitude of the location")
   },
-  async ({ latitude, longitude }) => {
+  async ({ latitude, longitude }, _) => {
     // Get grid point data
     const pointsUrl = `${NWS_API_BASE}/points/${latitude.toFixed(4)},${longitude.toFixed(4)}`;
     const pointsData = await makeNWSRequest<PointsResponse>(pointsUrl);
